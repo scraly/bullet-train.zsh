@@ -534,9 +534,9 @@ prompt_perl() {
 # Go
 prompt_go() {
   setopt extended_glob
-  if [[ (-f *.go(#qN) || -d Godeps || -f glide.yaml) ]]; then
+  if [[ (-n *.go(#qN) || -d Godeps || -f glide.yaml) ]]; then
     if command -v go > /dev/null 2>&1; then
-      prompt_segment $BULLETTRAIN_GO_BG $BULLETTRAIN_GO_FG $BULLETTRAIN_GO_PREFIX" $(go version | grep --colour=never -oE '[[:digit:]].[[:digit:]]+')"
+      prompt_segment $BULLETTRAIN_GO_BG $BULLETTRAIN_GO_FG $BULLETTRAIN_GO_PREFIX" $(go version | awk '{print substr($3, 3)}')"
     fi
   fi
 }
@@ -552,13 +552,10 @@ prompt_rust() {
 
 # Kubernetes Context
 prompt_kctx() {
-  if [[ ! -n $BULLETTRAIN_KCTX_KCONFIG ]]; then
-    return
-  fi
   if command -v kubectl > /dev/null 2>&1; then
     if [[ -f $BULLETTRAIN_KCTX_KCONFIG ]]; then
-      prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(cat $BULLETTRAIN_KCTX_KCONFIG|grep current-context| awk '{print $2}')"
-    fi  
+      prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(kubectl config current-context)"
+    fi
   fi
 }
 
