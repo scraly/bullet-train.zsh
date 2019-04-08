@@ -550,11 +550,11 @@ prompt_rust() {
   fi
 }
 
-# Kubernetes Context
+# Kubernetes Context and namespace
 prompt_kctx() {
   if command -v kubectl > /dev/null 2>&1; then
     if [[ -f $BULLETTRAIN_KCTX_KCONFIG ]]; then
-      prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(kubectl config current-context)"
+      prompt_segment $BULLETTRAIN_KCTX_BG $BULLETTRAIN_KCTX_FG $BULLETTRAIN_KCTX_PREFIX" $(kubectl config current-context):$(kubectl config view --minify --output 'jsonpath={..namespace}')"
     fi
   fi
 }
